@@ -1,0 +1,4 @@
+target
+*.iml
+src/main/resources/templates/testSideBar.html
+src/main/resources/templates/test.html
