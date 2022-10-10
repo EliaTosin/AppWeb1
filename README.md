@@ -1,4 +1,9 @@
-# Creazione di un item
+# Informazioni
+Questo è il progetto di Applicazioni Web 1, un sito web con backend e frontend sviluppati in Java con il framework Spring. La configurazione di IntelliJ è stata condivisa in modo da essere importata direttamente e funzionare senza doverci metter mano.
+
+
+# Descrizione delle richieste effettuate dal sito al backend
+## Creazione di un item
 
 **URL** : `/items`
 
@@ -52,7 +57,7 @@ category        bici
 id              1
 
 
-## Success Response
+### Success Response
 
 **Code** : `200 OK`
 
@@ -69,7 +74,7 @@ id              1
 }
 ```
 
-## Error Response
+### Error Response
 
 **Condition** : Se l'utente utilizza un id già precedentemente usato
 
@@ -97,7 +102,7 @@ Errore! Impossibile aggiungere l'oggetto!
 
 Errore! Impossibile gestire la richiesta!
 
-# Lettura di un item
+## Lettura di un item
 
 **URL** : `/items/"id_oggetto"`
 
@@ -108,7 +113,7 @@ Errore! Impossibile gestire la richiesta!
 **Auth required** : NO
 
 
-## Success Response
+### Success Response
 
 **Code** : `200 OK`
 
@@ -124,7 +129,7 @@ Errore! Impossibile gestire la richiesta!
 }
 ```
 
-## Error Response
+### Error Response
 
 **Condition** : Se l'utente utilizza un id non esistente
 
@@ -142,7 +147,7 @@ Errore! Impossibile trovare la risorsa!
 
 Lista di tutti gli oggetti presenti stampati in json
 
-# Lettura di tutti gli item
+## Lettura di tutti gli item
 
 **URL** : `/items"`
 
@@ -151,7 +156,7 @@ Lista di tutti gli oggetti presenti stampati in json
 **Auth required** : NO
 
 
-## Success Response
+### Success Response
 
 **Code** : `200 OK`
 
@@ -174,7 +179,7 @@ Lista di tutti gli oggetti presenti stampati in json
 }
 ```
 
-# Aggiornamento/Modifica completa di un item
+## Aggiornamento/Modifica completa di un item
 
 **URL** : `/items`
 
@@ -201,7 +206,7 @@ category        bici
 id              1
 
 
-## Success Response
+#### Success Response
 
 **Code** : `201`
 
@@ -218,7 +223,7 @@ id              1
 }
 ```
 
-## Error Response
+### Error Response
 
 **Condition** : Se l'utente utilizza un id non esistente
 
@@ -236,7 +241,7 @@ Errore! Impossibile trovare la risorsa!
 
 Errore! Impossibile aggiornare l'oggetto!
 
-# Eliminazione di un item
+## Eliminazione di un item
 
 **URL** : `/items`
 
@@ -254,11 +259,11 @@ id              id numerico dell'item
 
 id              1
 
-## Success Response
+### Success Response
 
 **Code** : `204`
 
-## Error Response
+### Error Response
 
 **Condition** : Se l'utente utilizza un id non esistente
 
