@@ -1,0 +1,46 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(100px, auto);
+    gap: 10px;
+}
+
+.topMenu {
+    grid-column: 1/2;
+    grid-row: 1;
+    border-style: none groove groove groove;
+    border-color: blue;
+    vertical-align: center;
+    background-color: aqua;
+}
+
+.attribute {
+    grid-column: 1;
+    font-size: 15pt;
+    vertical-align: center;
+    place-self: center;
+}
+
+.label {
+    grid-column: 2;
+    max-height: 20pt;
+    vertical-align: center;
+    place-self: center;
+}
+
+.footer {
+    grid-row: 7;
+    grid-column: 1/3;
+    border-color: blue;
+    border-style: groove none none none;
+    border-width: 2px;
+}
+
+a:link {color: blue}
+a:visited {color: purple}
+
+body {
+    background-color: lightskyblue;
+    margin: 0;
+}
+

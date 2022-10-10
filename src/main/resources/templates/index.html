@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Home</title>
+    <meta name="description" content="Pagina Home">
+    <meta name="author" content="Elia">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base th:href="@{/}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!--<link rel="stylesheet" th:href="@{/index.css}">-->
+</head>
+<body>
+<div class="container-fluid bg-black text-white">
+    <div>
+        <header class="d-flex flex-wrap justify-content-center py-3 px-3 mb-4 border-bottom bg-dark">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <img th:src="@{/newLogo.png}" alt="logo" height="50" width="50">
+                <span class="fs-4 px-3">Vendi e Compra</span>
+            </a>
+
+            <nav>
+                <ul class="nav nav-pills">
+                    <li class="px-2">
+                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                            <input type="search" class="form-control form-control-dark" id="searchField" placeholder="Cerca..." aria-label="Search">
+                        </form>
+                    </li>
+                    <li class="nav-item"><a th:href="@{/}" class="nav-link active" aria-current="page">Home</a></li>
+                    <li class="nav-item"><a th:href="@{/item/new}" class="nav-link">Crea Item</a></li>
+                    <form sec:authorize="isAuthenticated()">
+                        <li class="nav-item"><a th:href="@{'/confronta/' +${#authentication.name}}" class="nav-link" id="linkConfronta">Confronta (0)</a></li>
+                    </form>
+                </ul>
+            </nav>
+            <div class="dropdown ps-3" sec:authorize="isAuthenticated()">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none bg-dark dropdown-toggle px-2 py-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong><label th:text="${#authentication.name}"></label></strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </div>
+            <form sec:authorize="!isAuthenticated()" class="ps-4" action="#" th:action="@{/login}" method="get">
+                <button class="btn btn-warning" type="submit">Login</button>
+            </form>
+        </header>
+    </div>
+    <main>
+        <section id="sellItems">
+            <div class="px-1 py-5" id="custom-cards-vendo">
+                <h2 class="pb-2 border-bottom text-white" id="vendoTitle">Vendo</h2>
+
+                <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+                    <article th:each="item : ${items}"
+                             th:if="${item.isOfferta()}">
+                        <div class="col">
+                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
+                                <img th:src="@{'/item/' +${item.getId()}+'/image'}" alt="Immagine Item" width="390" height="300" style="align-self: center; padding: 10px; resize: none">
+                                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                    <h2 class="mb-5 display-6 lh-1 fw-bold" th:text="${item.getTitle()}">Titolo</h2>
+                                    <ul class="d-flex list-unstyled mt-auto">
+                                        <a class="btn btn-primary h-50 w-50" th:href="@{'/item/' +${item.getId()}}" role="button">Informazioni</a>
+                                        <li class="d-flex align-items-center me-3 ps-5">
+                                            <time th:text="${#dates.format(item.getDate(), 'dd/MM/yy')}"> Date </time>
+                                        </li>
+                                        <li class="d-flex align-items-center ">
+                                            <label th:text="${item.author.getUsername()}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="buyItems">
+            <div class="px-1 py-5">
+                <h2 class="pb-2 border-bottom text-white">Compro</h2>
+
+                <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+                    <article th:each="item : ${items}"
+                             th:if="${!item.isOfferta()}">
+                        <div class="col">
+                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
+                                <img th:src="@{'/item/' +${item.getId()}+'/image'}" alt="Immagine Item" width="390" height="300" style="align-self: center; padding: 10px; resize: none">
+                                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                    <h2 class="mb-5 display-6 lh-1 fw-bold" th:text="${item.getTitle()}">Titolo</h2>
+                                    <ul class="d-flex list-unstyled mt-auto">
+                                        <a class="btn btn-primary h-50 w-50" th:href="@{'/item/' +${item.getId()}}" role="button">Informazioni</a>
+                                        <li class="d-flex align-items-center me-3 ps-5">
+                                            <time th:text="${#dates.format(item.getDate(), 'dd/MM/yy')}"> Date </time>
+                                        </li>
+                                        <li class="d-flex align-items-center ">
+                                            <label th:text="${item.author.getUsername()}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!--pagina :: frammento-->
+    <div th:insert="master :: footer"></div>
+
+
+</div>
+<script th:src="@{/index.js}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+</html>
