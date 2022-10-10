@@ -31,9 +31,6 @@
                     </li>
                     <li class="nav-item"><a th:href="@{/}" class="nav-link active" aria-current="page">Home</a></li>
                     <li class="nav-item"><a th:href="@{/item/new}" class="nav-link">Crea Item</a></li>
-                    <form sec:authorize="isAuthenticated()">
-                        <li class="nav-item"><a th:href="@{'/confronta/' +${#authentication.name}}" class="nav-link" id="linkConfronta">Confronta (0)</a></li>
-                    </form>
                 </ul>
             </nav>
             <div class="dropdown ps-3" sec:authorize="isAuthenticated()">

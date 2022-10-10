@@ -57,7 +57,7 @@ public class ItemService {
                 blogPost.setDate(new Date());
                 blogPost.setLuogo("Lugano");
                 blogPost.setPrezzo(50000);
-                blogPost.setImage(FileUtil.readAsByteArray(this.getClass().getResourceAsStream("/static/newLogo.png")));
+                blogPost.setImage(FileUtil.readAsByteArray(this.getClass().getResourceAsStream("/static/slc.jpg")));
                 post(blogPost);
             }
         }
