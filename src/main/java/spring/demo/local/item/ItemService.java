@@ -1,15 +1,14 @@
-package ch.supsi.webapp.web.item;
+package spring.demo.local.item;
 
 
-
-import ch.supsi.webapp.web.author.User;
-import ch.supsi.webapp.web.author.UserRepository;
-import ch.supsi.webapp.web.category.Category;
-import ch.supsi.webapp.web.category.CategoryRepository;
 import ch.supsi.webapp.web.role.Role;
-import ch.supsi.webapp.web.role.RoleRepository;
 import org.aspectj.util.FileUtil;
 import org.springframework.stereotype.Service;
+import spring.demo.local.author.User;
+import spring.demo.local.author.UserRepository;
+import spring.demo.local.category.Category;
+import spring.demo.local.category.CategoryRepository;
+import spring.demo.local.role.RoleRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -19,26 +18,19 @@ import java.util.List;
 
 @Service
 public class ItemService {
-        private final ItemRepository ir;
+        public static final ItemRepository ir = new ItemRepository();
 
-        private final UserRepository ar;
+        public static final UserRepository ur = new UserRepository();
 
-        private final CategoryRepository cr;
+        public static final CategoryRepository cr = new CategoryRepository();
 
-        private final RoleRepository rr;
-
-        public ItemService(ItemRepository ir, UserRepository ur, CategoryRepository cr, RoleRepository rr) {
-            this.ir = ir;
-            this.ar = ur;
-            this.cr = cr;
-            this.rr = rr;
-        }
+        public static final RoleRepository rr = new RoleRepository();
 
         @PostConstruct
         public void init() throws IOException {
-            if(ar.findAll().size() == 0) {
+            if(ur.getSize() == 0) {
                 User admin = new User("admin", "admin", new Role("ROLE_ADMIN"));
-                ar.save(admin);
+                ur.save(admin);
                 rr.save(new Role("ROLE_ADMIN"));
             }
 
@@ -50,16 +42,19 @@ public class ItemService {
 
             if(ir.findAll().size() == 0) {
                 Item blogPost = new Item();
-                blogPost.setAuthor(ar.findById("admin").get());
+                blogPost.setAuthor(ur.findById("admin").get());
                 blogPost.setCategory(cr.findById("Veicoli").get());
-                blogPost.setTitle("\"SLC 43 Amg\"");
+                blogPost.setTitle("Audi R8");
                 blogPost.setDescription("Bellissima auto,divertente nel misto.Perfette condizioni.Airscarf,Parktronic,pelle...");
                 blogPost.setDate(new Date());
                 blogPost.setLuogo("Lugano");
-                blogPost.setPrezzo(50000);
-                blogPost.setImage(FileUtil.readAsByteArray(this.getClass().getResourceAsStream("/static/slc.jpg")));
+                blogPost.setPrezzo(150000);
+                blogPost.setAd_type(Item.Ad.Offerta);
+                blogPost.setImage(FileUtil.readAsByteArray(this.getClass().getResourceAsStream("/static/audi-r8-v10-plus-ge67534769_640.jpeg")));
                 post(blogPost);
             }
+
+//            System.err.println("Trovati dal filtro: " + getAllFiltered("auto"));
         }
 
         public List<Item> getAll(){
@@ -71,15 +66,11 @@ public class ItemService {
         }
 
         public Item post(Item p){
-            return ir.save(p);
+            return ir.save(p, true);
         }
 
         public Item put(Item p) {
-            return ir.save(p);
-        }
-
-        public List<Item> getAllFiltered(String filter) {
-            return ir.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(filter, filter);
+            return ir.save(p, false);
         }
 
         public boolean exists(int id) {

@@ -1,4 +1,4 @@
-package ch.supsi.webapp.web;
+package spring.demo.local;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/login", "/register").permitAll()
-                .antMatchers("/items/search/*").permitAll()
                 .antMatchers("/item/*").permitAll()
+                .antMatchers("/search/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

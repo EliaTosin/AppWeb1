@@ -1,15 +1,13 @@
-package ch.supsi.webapp.web;
+package spring.demo.local;
 
-import ch.supsi.webapp.web.dto.ItemDTO;
-import ch.supsi.webapp.web.dto.Success;
-import ch.supsi.webapp.web.item.Item;
-import ch.supsi.webapp.web.item.ItemRepository;
-import ch.supsi.webapp.web.item.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.demo.local.dto.ItemDTO;
+import spring.demo.local.dto.Success;
+import spring.demo.local.item.Item;
+import spring.demo.local.item.ItemService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,19 +52,6 @@ public class ItemController {
         boolean remove = service.delete(id);
         if(remove) return new ResponseEntity<>(new Success(true), HttpStatus.OK);
         else return new ResponseEntity<>(new Success(false), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/search", produces = "application/json")
-    public List<Item> findItems(@RequestParam("q") String find) {
-//        ArrayList<Item> itemsFiltered = new ArrayList<>();
-//        for (Item item : service.getAll()) {
-//            if (item.getTitle().toLowerCase().contains(find.toLowerCase()) ||
-//                    item.getCategory().toString().toLowerCase().contains(find.toLowerCase()) ||
-//                    item.getDescription().toLowerCase().contains(find.toLowerCase())) {
-//                itemsFiltered.add(item);
-//            }
-//        }
-        return service.getAllFiltered(find); 
     }
 
 }

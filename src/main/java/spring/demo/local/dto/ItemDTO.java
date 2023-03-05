@@ -1,9 +1,9 @@
-package ch.supsi.webapp.web.dto;
+package spring.demo.local.dto;
 
-import ch.supsi.webapp.web.item.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import spring.demo.local.item.Item;
 
 import java.util.Date;
 

@@ -1,45 +1,29 @@
-package ch.supsi.webapp.web;
+package spring.demo.local;
 
-import ch.supsi.webapp.web.author.User;
-import ch.supsi.webapp.web.author.UserRepository;
-import ch.supsi.webapp.web.category.Category;
-import ch.supsi.webapp.web.category.CategoryRepository;
-import ch.supsi.webapp.web.item.Item;
-import ch.supsi.webapp.web.item.ItemRepository;
 import ch.supsi.webapp.web.role.Role;
-import ch.supsi.webapp.web.role.RoleRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import spring.demo.local.author.User;
+import spring.demo.local.author.UserRepository;
+import spring.demo.local.category.Category;
+import spring.demo.local.category.CategoryRepository;
+import spring.demo.local.item.Item;
+import spring.demo.local.item.ItemRepository;
+import spring.demo.local.role.RoleRepository;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import static spring.demo.local.item.ItemService.*;
 
 @Controller
 public class WebPagesController {
-    private final ItemRepository ir;
-
-    private final UserRepository ur;
-
-    private final CategoryRepository cr;
-
-    private final RoleRepository rr;
-
-    public WebPagesController(ItemRepository ir, UserRepository ur, CategoryRepository cr, RoleRepository rr) {
-        this.ir = ir;
-        this.ur = ur;
-        this.cr = cr;
-        this.rr = rr;
-    }
 
     @GetMapping("/")
     public String home(Model model){
@@ -61,7 +45,7 @@ public class WebPagesController {
 
     @PostMapping("/register")
     public String commitUser(String username, String password){
-        if (!ur.findById(username).isPresent()) {
+        if (ur.findById(username).isEmpty()) {
             User newUser = new User(username, password, new Role("ROLE_USER"));
             ur.save(newUser);
             rr.save(new Role("ROLE_USER"));
@@ -114,7 +98,7 @@ public class WebPagesController {
             }
         }
         model.addAttribute("item", item);
-        ir.save(item);
+        ir.save(item, true);
 
         return "redirect:/";
     }
@@ -135,7 +119,7 @@ public class WebPagesController {
 
     @PostMapping(value = "/item/{id}/edit")
     public String modifyItemPost(Model model, Item item, @PathVariable int id) {
-        Item newItem = ir.getById(id);
+        Item newItem = ir.findById(id).get();
         newItem.setTitle(item.getTitle());
         newItem.setDescription(item.getDescription());
         newItem.setDate(Date.from(Instant.now()));
@@ -144,14 +128,21 @@ public class WebPagesController {
         model.addAttribute("item", newItem);
 
         ir.deleteById(id);
-        ir.save(newItem);
+        ir.save(newItem, false);
         return "redirect:/";
     }
 
     @GetMapping(value = "/item/{id}/delete")
-    public String deleteItem(@PathVariable int id) {
+    public String deleteItem(@PathVariable int id){
         if (ir.existsById(id))
-            ir.delete(ir.getById(id));
+            ir.deleteById(id);
         return "redirect:/";
     }
+
+    @GetMapping(value = "/search/{str}")
+    @ResponseBody
+    public List<Item> searchItems(@PathVariable String str){
+        return ir.findAllByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(str, str);
+    }
+
 }

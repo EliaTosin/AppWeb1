@@ -1,4 +1,4 @@
-package ch.supsi.webapp.web.dto;
+package spring.demo.local.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

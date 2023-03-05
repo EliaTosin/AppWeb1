@@ -4,7 +4,7 @@ search.addEventListener("input", searchItems);
 function searchItems(event) {
     if (search.value.length > 2) {
         var context = document.querySelector('base').getAttribute('href');
-        var url = context + "items/search/?q=" + event.target.value;
+        var url = context + "search/" + event.target.value;
         var options = {method : "GET"};
 
         fetch(url, options)
